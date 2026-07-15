@@ -13,3 +13,9 @@ model Piloto {
   matricula  String  @unique
   isAtivo    Boolean @default(true)
 }
+
+model Aeronave {
+  id         Int     @id @default(autoincrement())
+  prefixo    String
+  autonomia  Int
+}
