@@ -9,8 +9,5 @@ export class AeronavesController {
   @Post()
   create(@Body() dto: CreateAeronaveDto) {
     return this.aeronavesService.create(dto);
-    console.log(dto);
-    console.log(typeof dto.prefixo);
-    console.log(typeof dto.autonomia);
   }
 }

@@ -15,7 +15,8 @@ model Piloto {
 }
 
 model Aeronave {
-  id         Int     @id @default(autoincrement())
-  prefixo    String
-  autonomia  Int
+  id                  Int    @id @default(autoincrement())
+  prefixo             String
+  autonomia           Int
+  velocidadeCruzeiro  Float
 }

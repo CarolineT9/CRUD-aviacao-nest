@@ -7,4 +7,7 @@ export class CreateAeronaveDto {
   @IsInt()
   @IsPositive()
   autonomia: number;
+
+  @IsPositive()
+  velocidadeCruzeiro: number;
 }
