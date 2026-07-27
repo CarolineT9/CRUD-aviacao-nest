@@ -4,9 +4,10 @@ import { AppService } from './app.service';
 import { PilotosModule } from './pilotos/pilotos.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { AeronavesModule } from './aeronaves/aeronaves.module';
+import { AeroviaModule } from './aerovia/aerovia.module';
 
 @Module({
-  imports: [PilotosModule, PrismaModule, AeronavesModule],
+  imports: [PilotosModule, PrismaModule, AeronavesModule, AeroviaModule],
   controllers: [AppController],
   providers: [AppService],
 })

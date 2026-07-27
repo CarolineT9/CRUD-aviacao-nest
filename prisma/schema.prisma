@@ -20,3 +20,10 @@ model Aeronave {
   autonomia           Int
   velocidadeCruzeiro  Float
 }
+
+model Aerovia {
+  id                  Int    @id @default(autoincrement())
+  origem             String
+  destino             String
+  tamanho           Int
+}
