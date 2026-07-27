@@ -8,22 +8,35 @@ datasource db {
 }
 
 model Piloto {
-  id         Int     @id @default(autoincrement())
-  nome       String
-  matricula  String  @unique
-  isAtivo    Boolean @default(true)
-}
+  id          Int           @id @default(autoincrement())
+  nome        String
+  matricula   String        @unique
+  isAtivo     Boolean       @default(true)
 
-model Aeronave {
-  id                  Int    @id @default(autoincrement())
-  prefixo             String
-  autonomia           Int
-  velocidadeCruzeiro  Float
+  planosDeVoo PlanoDeVoo[]
 }
 
 model Aerovia {
-  id                  Int    @id @default(autoincrement())
-  origem             String
-  destino             String
-  tamanho           Int
+  id            Int           @id @default(autoincrement())
+  origem        String
+  destino       String
+  tamanho       Int
+
+  planosDeVoo   PlanoDeVoo[]
+}
+
+model PlanoDeVoo {
+  id          Int       @id @default(autoincrement())
+
+  pilotoId    Int
+  piloto      Piloto    @relation(fields: [pilotoId], references: [id])
+
+  aeroviaId   Int
+  aerovia     Aerovia   @relation(fields: [aeroviaId], references: [id])
+
+  data        DateTime
+  horario     String
+  altitude    Int
+  slots       Json
+  cancelado   Boolean   @default(false)
 }
