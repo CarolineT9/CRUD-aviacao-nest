@@ -22,4 +22,8 @@ export class AeroviaService {
       }
     }
   }
+
+  findAll() {
+    return this.prisma.aerovia.findMany();
+  }
 }
