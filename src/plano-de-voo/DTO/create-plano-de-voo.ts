@@ -1,39 +1,29 @@
 import {
-  IsArray,
-  IsBoolean,
   IsDateString,
   IsInt,
-  IsNotEmpty,
-  IsOptional,
   IsString,
+  IsPositive,
 } from 'class-validator';
 
 export class CreatePlanoDeVooDto {
   @IsInt()
-  @IsNotEmpty()
+  @IsPositive()
   pilotoId: number;
 
   @IsInt()
-  @IsNotEmpty()
+  @IsPositive()
+  aeronaveId: number;
+
+  @IsInt()
+  @IsPositive()
   aeroviaId: number;
 
   @IsDateString()
-  @IsNotEmpty()
   data: string;
 
   @IsString()
-  @IsNotEmpty()
   horario: string;
 
   @IsInt()
-  @IsNotEmpty()
   altitude: number;
-
-  @IsArray()
-  @IsNotEmpty()
-  slots: string[];
-
-  @IsBoolean()
-  @IsOptional()
-  cancelado?: boolean;
 }

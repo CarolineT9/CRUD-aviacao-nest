@@ -47,6 +47,9 @@ model PlanoDeVoo {
   pilotoId Int
   piloto   Piloto @relation(fields: [pilotoId], references: [id])
 
+  aeronaveId Int
+  aeronave   Aeronave @relation(fields: [aeronaveId], references: [id])
+
   aeroviaId Int
   aerovia   Aerovia @relation(fields: [aeroviaId], references: [id])
 
@@ -54,7 +57,7 @@ model PlanoDeVoo {
   horario   String
   altitude  Int
   slots     Json
-  cancelado Boolean  @default(false)
+  cancelado Boolean @default(false)
 }
 
 model Aeronave {
@@ -66,6 +69,8 @@ model Aeronave {
 
   particular AeronaveParticular?
   comercial  AeronaveComercial?
+
+  planosDeVoo PlanoDeVoo[]
 }
 
 model AeronaveParticular {
