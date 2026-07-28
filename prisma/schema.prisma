@@ -8,87 +8,103 @@ datasource db {
 }
 
 model Piloto {
-  id          Int           @id @default(autoincrement())
-  nome        String
-  matricula   String        @unique
-  isAtivo     Boolean       @default(true)
+  id        Int     @id @default(autoincrement())
+  nome      String
+  matricula String  @unique
+  isAtivo   Boolean @default(true)
 
   planosDeVoo PlanoDeVoo[]
 }
 
 model Aerovia {
-  id            Int           @id @default(autoincrement())
-  origem        String
-  destino       String
-  tamanho       Int
+  id            Int    @id @default(autoincrement())
+  identificador String @unique
 
-  planosDeVoo   PlanoDeVoo[]
+  origem  String
+  destino String
+  tamanho Int
+
+  ocupacoes   OcupacaoAerovia[]
+  planosDeVoo PlanoDeVoo[]
+}
+
+model OcupacaoAerovia {
+  id Int @id @default(autoincrement())
+
+  aeroviaId Int
+  aerovia   Aerovia @relation(fields: [aeroviaId], references: [id])
+
+  data     DateTime
+  altitude Int
+  slot     Int
+
+  @@unique([aeroviaId, data, altitude, slot])
 }
 
 model PlanoDeVoo {
-  id          Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  pilotoId    Int
-  piloto      Piloto    @relation(fields: [pilotoId], references: [id])
+  pilotoId Int
+  piloto   Piloto @relation(fields: [pilotoId], references: [id])
 
-  aeroviaId   Int
-  aerovia     Aerovia   @relation(fields: [aeroviaId], references: [id])
+  aeroviaId Int
+  aerovia   Aerovia @relation(fields: [aeroviaId], references: [id])
 
-  data        DateTime
-  horario     String
-  altitude    Int
-  slots       Json
-  cancelado   Boolean   @default(false)
+  data      DateTime
+  horario   String
+  altitude  Int
+  slots     Json
+  cancelado Boolean  @default(false)
 }
 
 model Aeronave {
-  id                 Int    @id @default(autoincrement())
-  prefixo            String @unique
+  id                 Int          @id @default(autoincrement())
+  prefixo            String       @unique
   tipo               TipoAeronave
   velocidadeCruzeiro Int
   autonomia          Int
 
-  particular         AeronaveParticular?
-  comercial          AeronaveComercial?
+  particular AeronaveParticular?
+  comercial  AeronaveComercial?
 }
 
 model AeronaveParticular {
-  id              Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  aeronaveId      Int @unique
-  aeronave        Aeronave @relation(fields: [aeronaveId], references: [id])
+  aeronaveId Int      @unique
+  aeronave   Aeronave @relation(fields: [aeronaveId], references: [id])
 
-  respManutencao  String
+  respManutencao String
 }
 
 model AeronaveComercial {
-  id             Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  aeronaveId     Int @unique
-  aeronave       Aeronave @relation(fields: [aeronaveId], references: [id])
+  aeronaveId Int      @unique
+  aeronave   Aeronave @relation(fields: [aeronaveId], references: [id])
 
-  nomeCia        String
+  nomeCia String
 
-  passageiro     AeronavePassageiro?
-  carga          AeronaveCarga?
+  passageiro AeronavePassageiro?
+  carga      AeronaveCarga?
 }
 
 model AeronavePassageiro {
-  id            Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  comercialId   Int @unique
-  comercial     AeronaveComercial @relation(fields: [comercialId], references: [id])
+  comercialId Int               @unique
+  comercial   AeronaveComercial @relation(fields: [comercialId], references: [id])
 
   maxPassageiros Int
 }
 
 model AeronaveCarga {
-  id           Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  comercialId  Int @unique
-  comercial    AeronaveComercial @relation(fields: [comercialId], references: [id])
+  comercialId Int               @unique
+  comercial   AeronaveComercial @relation(fields: [comercialId], references: [id])
 
-  pesoMax      Float
+  pesoMax Float
 }
 
 enum TipoAeronave {
