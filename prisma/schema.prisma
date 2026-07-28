@@ -40,3 +40,59 @@ model PlanoDeVoo {
   slots       Json
   cancelado   Boolean   @default(false)
 }
+
+model Aeronave {
+  id                 Int    @id @default(autoincrement())
+  prefixo            String @unique
+  tipo               TipoAeronave
+  velocidadeCruzeiro Int
+  autonomia          Int
+
+  particular         AeronaveParticular?
+  comercial          AeronaveComercial?
+}
+
+model AeronaveParticular {
+  id              Int @id @default(autoincrement())
+
+  aeronaveId      Int @unique
+  aeronave        Aeronave @relation(fields: [aeronaveId], references: [id])
+
+  respManutencao  String
+}
+
+model AeronaveComercial {
+  id             Int @id @default(autoincrement())
+
+  aeronaveId     Int @unique
+  aeronave       Aeronave @relation(fields: [aeronaveId], references: [id])
+
+  nomeCia        String
+
+  passageiro     AeronavePassageiro?
+  carga          AeronaveCarga?
+}
+
+model AeronavePassageiro {
+  id            Int @id @default(autoincrement())
+
+  comercialId   Int @unique
+  comercial     AeronaveComercial @relation(fields: [comercialId], references: [id])
+
+  maxPassageiros Int
+}
+
+model AeronaveCarga {
+  id           Int @id @default(autoincrement())
+
+  comercialId  Int @unique
+  comercial    AeronaveComercial @relation(fields: [comercialId], references: [id])
+
+  pesoMax      Float
+}
+
+enum TipoAeronave {
+  PARTICULAR
+  PASSAGEIRO
+  CARGA
+}
