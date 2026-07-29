@@ -77,6 +77,58 @@ export class AeroviaService {
     }
   }
 
+  /**
+   * Finds all available altitudes for a given airway, date and time.
+   *
+   * @param airwayId Identificador da aerovia.
+   * @param date Data do voo.
+   * @param time Horário do voo no formato "HH:mm".
+   * @returns Lista de altitudes disponíveis.
+   */
+  async findAvailableAltitudes(
+    airwayId: number,
+    date: string,
+    time: string,
+  ): Promise<number[]> {
+    const slot = Number(time.split(':')[0]);
+
+    const occupiedAltitudes = await this.prisma.ocupacaoAerovia.findMany({
+      where: {
+        aeroviaId: airwayId,
+        data: new Date(date),
+        slot,
+      },
+    });
+
+    const availableAltitudes = [
+      25000, 26000, 27000, 28000, 29000, 30000, 31000, 32000, 33000, 34000,
+      35000,
+    ];
+
+    return availableAltitudes.filter(
+      (altitude) =>
+        !occupiedAltitudes.some((occupied) => occupied.altitude === altitude),
+    );
+  }
+
+  /**
+   * Busca todas as altitudes disponíveis para uma determinada aerovia,
+   * considerando uma data e um horário específicos.
+   *
+   * @param airwayId Identificador da aerovia.
+   * @param date Data do voo.
+   * @param time Horário do voo no formato "HH:mm".
+   * @returns Lista contendo as altitudes que não possuem ocupação no horário informado.
+   */
+  async findRoutes(origin: string, destination: string): Promise<Aerovia[]> {
+    return this.prisma.aerovia.findMany({
+      where: {
+        origem: origin,
+        destino: destination,
+      },
+    });
+  }
+
   private handlePrismaError(error: unknown): never {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {

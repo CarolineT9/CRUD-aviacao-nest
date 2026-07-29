@@ -208,14 +208,45 @@ export class PlanoDeVooService {
     }
   }
 
+
+  /**
+   * Calcula os slots de tempo que a aeronave ocupará na aerovia.
+   *
+   * O cálculo considera:
+   * - A tamanho da aerovia (em km);
+   * - A velocidade de cruzeiro da aeronave (em km/h);
+   * - O horário de partida do voo.
+   *
+   * O tempo de voo é obtido pela fórmula:
+   * `tempo = tamanho / velocidade`.
+   *
+   * Cada hora (ou fração de hora) ocupa um slot inteiro, por isso é utilizado
+   * `Math.ceil()` para arredondar o tempo para cima.
+   *
+   * Os slots são representados pela hora do dia (0 a 23). Caso o voo ultrapasse
+   * a meia-noite, os horários reiniciam em 0 utilizando o operador módulo (`% 24`).
+   *
+   * Exemplo:
+   * - Tamanho: 600 km
+   * - Velocidade: 250 km/h
+   * - Horário: 22:00
+   *
+   * Tempo de voo = 2,4 h → 3 slots
+   * Slots ocupados: [22, 23, 0]
+   *
+   * @param tamanho Tamanho da aerovia em quilômetros.
+   * @param velocidade Velocidade de cruzeiro da aeronave em km/h.
+   * @param horario Horário de partida no formato "HH:mm".
+   * @returns Lista de slots (horas) ocupados durante o voo.
+   */
   private calcularSlots(
     tamanho: number,
     velocidade: number,
     horario: string,
   ): number[] {
-    const tempo = tamanho / velocidade;
+    const tempoHoras = tamanho / velocidade;
 
-    const quantidadeSlots = Math.ceil(tempo);
+    const quantidadeSlots = Math.ceil(tempoHoras);
 
     const horaInicial = Number(horario.split(':')[0]);
 
@@ -223,7 +254,7 @@ export class PlanoDeVooService {
       {
         length: quantidadeSlots,
       },
-      (_, index) => horaInicial + index,
+      (_, index) => (horaInicial + index) % 24,
     );
   }
 }

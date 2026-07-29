@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
 export class CreatePilotoDto {
   @IsString()
   @IsNotEmpty()
@@ -7,4 +7,7 @@ export class CreatePilotoDto {
   @IsString()
   @IsNotEmpty()
   matricula: string;
+
+  @IsBoolean()
+  isAtivo: boolean;
 }

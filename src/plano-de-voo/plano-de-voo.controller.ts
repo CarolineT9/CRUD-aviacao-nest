@@ -6,15 +6,15 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { PlanoDeVooService } from './plano-de-voo.service';
 import { CreatePlanoDeVooDto } from './DTO/create-plano-de-voo';
+import { FindAvailableAltitudesDto } from 'src/aerovia/DTO/find-available-altitudes';
 
 @Controller('plano-de-voo')
 export class PlanoDeVooController {
-  constructor(
-    private readonly planoDeVooService: PlanoDeVooService,
-  ) {}
+  constructor(private readonly planoDeVooService: PlanoDeVooService) {}
 
   @Post()
   create(@Body() dto: CreatePlanoDeVooDto) {
@@ -27,16 +27,12 @@ export class PlanoDeVooController {
   }
 
   @Get(':id')
-  findOne(
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.planoDeVooService.findOne(id);
   }
 
   @Patch(':id/cancelar')
-  cancelar(
-    @Param('id', ParseIntPipe) id: number,
-  ) {
+  cancelar(@Param('id', ParseIntPipe) id: number) {
     return this.planoDeVooService.cancelar(id);
   }
 }
